@@ -1,0 +1,49 @@
+---
+interface Props {
+  direction: 'Input' | 'Output'
+  keyId: string
+  liveInputId: string
+  stateId: string
+  saveId: string
+  clearId: string
+  keyPlaceholder: string
+  keyHint: string
+}
+
+const { direction, keyId, liveInputId, stateId, saveId, clearId, keyPlaceholder, keyHint } = Astro.props
+---
+
+<div class="secret-field">
+  <div class="secret-heading">
+    <label for={keyId}>{direction} Profile RTMPS Key</label>
+    <span id={stateId} class="secret-state">Checking configuration...</span>
+  </div>
+  <input type="password" id={keyId} autocomplete="off" autocapitalize="none" spellcheck="false" placeholder={keyPlaceholder} maxlength="2011" disabled />
+  <label for={liveInputId}>Stream Live Input ID</label>
+  <input type="text" id={liveInputId} autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="32-character Live Input ID" maxlength="32" disabled />
+  <p class="hint">Use the RTMPS {keyHint} key and Live Input ID from the same Stream Live Input.</p>
+  <div class="actions actions-compact">
+    <button type="button" id={saveId} class="btn btn-primary" disabled>Save {direction} Profile</button>
+    <button type="button" id={clearId} class="btn btn-secondary" disabled>Use Deployment Defaults</button>
+  </div>
+</div>
+
+<style>
+  .secret-field { margin-bottom: 1rem; padding: 1rem; border: 1px solid var(--border); border-radius: 0.4rem; background: var(--surface-muted); }
+  .secret-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 0.5rem; }
+  label { display: block; margin-bottom: 0.5rem; color: var(--text-muted); font-weight: 600; }
+  .secret-heading label { margin-bottom: 0; }
+  .secret-field > label { margin-top: 0.75rem; }
+  input { box-sizing: border-box; width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 0.3rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 1rem; }
+  .hint { margin: 0.5rem 0 0; color: var(--text-muted); font-size: 0.875rem; }
+  .secret-state { color: var(--text-subtle); text-align: right; font-size: 0.8rem; }
+  :global(.secret-state-valid) { color: var(--success); }
+  :global(.secret-state-invalid) { color: var(--error); }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
+  .actions-compact { margin-top: 0.75rem; }
+  .actions-compact .btn { padding: 0.55rem 0.85rem; font-size: 0.875rem; }
+  @media (max-width: 600px) {
+    .secret-heading { display: block; }
+    .secret-state { display: block; margin-top: 0.25rem; text-align: left; }
+  }
+</style>

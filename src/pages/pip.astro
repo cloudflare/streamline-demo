@@ -1,0 +1,21 @@
+---
+import Layout from '../layouts/Layout.astro'
+import StreamingInterface from '../layouts/StreamingInterface.astro'
+
+const howItWorksSteps = [
+  'The Worker resolves the selected HLS source or server-managed <code>default</code> RTMP input profile',
+  'The browser captures webcam video and uploads WebM chunks through <code>/ingest</code>',
+  'The container scales the webcam to 25% of each output dimension and positions it in the top-right corner',
+  'ffmpeg composites both inputs and encodes the result as H.264',
+  'RTMP output preserves the background stream audio; browser preview remains video-only',
+]
+---
+
+<Layout title="Streamline Demo — Picture-in-Picture">
+  <StreamingInterface
+    title="Webcam Picture-in-Picture"
+    description="Overlay your browser webcam on the selected HLS or server-managed RTMP live input while preserving your configured output and resolution settings."
+    preset="pip"
+    howItWorksSteps={howItWorksSteps}
+  />
+</Layout>

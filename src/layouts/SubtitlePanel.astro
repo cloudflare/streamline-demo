@@ -1,0 +1,41 @@
+<div class="subtitles-panel" id="subtitlesPanel" data-subtitles-interface>
+  <h3>Subtitle Controls</h3>
+  <div class="field">
+    <label for="subtitleVideoId">Stream Video ID</label>
+    <input type="text" id="subtitleVideoId" placeholder="cf1e..." />
+    <p class="hint">Defaults to the Video ID from Settings. Enter a different ID to test another video.</p>
+  </div>
+  <div class="subtitle-status" id="subtitleStatus">
+    <p class="status-text">Click <strong>Start Streaming</strong> to begin processing.</p>
+  </div>
+  <div class="subtitle-info" id="subtitleInfo" style="display: none;">
+    <div class="subtitle-badge">Subtitles</div>
+    <div class="subtitle-meta">
+      <span id="subtitleLang">Language: &mdash;</span>
+      <span id="subtitleCues">Cues: &mdash;</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { initializeSubtitlesInterface } from '../lib/subtitles-interface'
+
+  initializeSubtitlesInterface()
+</script>
+
+<style>
+  .subtitles-panel { max-width: 1200px; margin: 0 auto 2rem; padding: 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 0.5rem; }
+  .subtitles-panel h3 { margin: 0 0 1rem; }
+  .field { margin-bottom: 1rem; }
+  .field label { display: block; margin-bottom: 0.5rem; color: var(--text-muted); font-weight: 600; }
+  .field input[type='text'] { box-sizing: border-box; width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 0.3rem; font-family: monospace; font-size: 1rem; }
+  .hint { margin: 0.5rem 0 0; color: var(--text-muted); font-size: 0.875rem; }
+  .subtitle-status { margin-top: 1rem; padding: 0.75rem; color: var(--info); background: var(--info-bg); border-radius: 0.3rem; }
+  .status-text { margin: 0; font-size: 0.875rem; }
+  :global(.status-error) { color: var(--error); }
+  :global(.status-success) { color: var(--success); }
+  :global(.status-warning) { color: var(--warning); }
+  .subtitle-info { display: flex; align-items: center; gap: 1rem; margin-top: 1rem; padding: 0.75rem 1rem; background: var(--surface-raised); border: 1px solid var(--border); border-radius: 0.3rem; }
+  .subtitle-meta { display: flex; gap: 1.5rem; color: var(--text-muted); font-size: 0.875rem; }
+  .subtitle-badge { width: fit-content; padding: 0.25rem 0.5rem; color: #111; background: var(--cf-orange); border-radius: 0.2rem; font-size: 0.75rem; font-weight: 700; }
+</style>

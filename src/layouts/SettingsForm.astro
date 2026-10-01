@@ -1,0 +1,77 @@
+---
+import SettingsField from '../components/SettingsField.astro'
+import SettingsInformationField from '../components/SettingsInformationField.astro'
+import MediaProfile from './MediaProfile.astro'
+import SettingsRadioGroup from './SettingsRadioGroup.astro'
+
+interface Props { playground?: boolean }
+
+const { playground = false } = Astro.props
+
+const sourceOptions = [
+  { id: 'sourceWebcam', value: 'webcam', label: 'Webcam (browser MediaRecorder)', checked: true },
+  { id: 'sourceStreamHls', value: 'stream-hls', label: 'Stream Video (HLS)' },
+  { id: 'sourceStreamRtmp', value: 'stream-rtmp', label: 'Stream Live (RTMPS playback)', hidden: playground },
+]
+
+const outputOptions = [
+  { id: 'outputRtmp', value: 'rtmp', label: 'RTMP / Stream Live', checked: true, hidden: playground },
+  { id: 'outputPreview', value: 'preview', label: 'Browser Preview (Durable Relay/MSE)' },
+]
+---
+
+<div class="settings-form" data-settings-interface data-playground={String(playground)}>
+  <h3>Input Source</h3>
+  <SettingsRadioGroup
+    name="sourceType"
+    options={sourceOptions}
+    hint="Select where the input video comes from. Streamline can pull either a Cloudflare Stream HLS manifest or a Cloudflare Stream RTMPS playback URL instead of capturing your webcam."
+  />
+  <SettingsField id="videoId" containerId="streamVideoField" hidden kind="text" label="Stream Video ID" placeholder="cf1e..." hint="The Cloudflare Stream video ID (the hex string from the video URL)." />
+  <SettingsInformationField containerId="streamRtmpField" hidden label="Stream RTMP Input" hint="Uses the deployment's server-managed default RTMP input profile. Its HLS annotation preview is derived from the paired Stream Live Input ID." hintHtml="Uses the deployment's server-managed <code>default</code> RTMP input profile. Its HLS annotation preview is derived from the paired Stream Live Input ID." />
+
+  <div style={playground ? 'display: none;' : undefined}>
+    <hr class="divider" />
+    <h3>Output</h3>
+    <SettingsRadioGroup
+      name="outputMode"
+      options={outputOptions}
+      hint="Select the output destination. Browser Preview sends processed video back through the Durable Relay. RTMP pushes directly from the container to a live streaming server."
+    />
+    <SettingsInformationField containerId="outputRtmpFields" label="Stream RTMP Output" hint="Uses the deployment's server-managed default RTMP output profile. Its player URL is derived from the paired Stream Live Input ID." hintHtml="Uses the deployment's server-managed <code>default</code> RTMP output profile. Its player URL is derived from the paired Stream Live Input ID." />
+  </div>
+
+  <div style={playground ? 'display: none;' : undefined}>
+  <hr class="divider" />
+  <section class="secret-settings" aria-labelledby="mediaOverridesHeading">
+    <h3 id="mediaOverridesHeading">Owner Stream Live Profiles</h3>
+    <p class="hint secret-intro">Save each RTMPS credential together with its matching Stream Live Input ID. The credential is write-only; HLS and player URLs are derived from the ID and kept out of browser storage. Changes apply when the next stream starts.</p>
+    <p id="mediaOverridesAvailability" class="hint secret-state-invalid" hidden></p>
+    <MediaProfile direction="Input" keyId="rtmpInputOverride" liveInputId="rtmpInputLiveInputId" stateId="rtmpInputOverrideState" saveId="saveRtmpInputOverride" clearId="clearRtmpInputOverride" keyPlaceholder="RTMPS playback key" keyHint="playback" />
+    <MediaProfile direction="Output" keyId="rtmpOutputOverride" liveInputId="rtmpOutputLiveInputId" stateId="rtmpOutputOverrideState" saveId="saveRtmpOutputOverride" clearId="clearRtmpOutputOverride" keyPlaceholder="RTMPS broadcast key" keyHint="broadcast" />
+  </section>
+  </div>
+
+  <SettingsField id="outputResolution" hidden={playground} kind="select" label="Output Resolution" hint="Resolution applied to all inputs before processing and combining. Lower resolutions reduce CPU load." options={[{ value: '1920x1080', label: '1920×1080 (Full HD)' }, { value: '1280x720', label: '1280×720 (HD)' }, { value: '960x540', label: '960×540 (qHD)' }, { value: '640x360', label: '640×360 (nHD)' }]} />
+  <SettingsField id="bufferPriming" kind="number" label="Buffer Priming Threshold (seconds)" hint="Minimum buffer duration before playback starts. Higher values reduce startup stuttering but increase latency." min="0.5" max="10" step="0.5" value="2" />
+
+  <hr class="divider" />
+  <div class="actions"><button type="button" id="resetBtn" class="btn btn-secondary">Reset Display Preferences</button></div>
+  <div id="status" class="status" aria-live="polite"></div>
+</div>
+
+<style>
+  .settings-form { margin-bottom: 2rem; padding: 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 0.5rem; }
+  .settings-form h3 { margin-top: 0; margin-bottom: 1rem; font-size: 1.125rem; }
+  .divider { margin: 1.5rem 0; border: none; border-top: 1px solid var(--border); }
+  .secret-settings { margin-bottom: 1.5rem; }
+  .hint { margin: 0.5rem 0 0; color: var(--text-muted); font-size: 0.875rem; }
+  .secret-intro { margin-bottom: 1.25rem; }
+  :global(.secret-state-invalid) { color: var(--error); }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
+  .status { min-height: 1.5rem; margin-top: 1rem; padding: 0.75rem; border-radius: 0.3rem; font-size: 0.875rem; }
+  :global(.status-success) { color: var(--success); background: var(--success-bg); }
+  :global(.status-error) { color: var(--error); background: var(--error-bg); }
+  :global(.status-info) { color: var(--info); background: var(--info-bg); }
+  :global(.status-warning) { color: var(--warning); background: var(--warning-bg); }
+</style>

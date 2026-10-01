@@ -1,0 +1,45 @@
+---
+import FilterControl from '../components/FilterControl.astro'
+
+const controls = [
+  { id: 'blur', label: 'Blur', type: 'range' as const, min: '0', max: '10', step: '0.5', value: '0', valueId: 'blurValue' },
+  { id: 'brightness', label: 'Brightness', type: 'range' as const, min: '-1', max: '1', step: '0.05', value: '0', valueId: 'brightnessValue' },
+  { id: 'contrast', label: 'Contrast', type: 'range' as const, min: '0', max: '2', step: '0.05', value: '1', valueId: 'contrastValue' },
+  { id: 'saturation', label: 'Saturation', type: 'range' as const, min: '0', max: '2', step: '0.05', value: '1', valueId: 'saturationValue' },
+  { id: 'gamma', label: 'Gamma', type: 'range' as const, min: '0.1', max: '3', step: '0.05', value: '1', valueId: 'gammaValue' },
+  { id: 'sharpen', label: 'Sharpen', type: 'range' as const, min: '0', max: '5', step: '0.1', value: '0', valueId: 'sharpenValue' },
+  { id: 'flip', label: 'Flip Horizontal', type: 'checkbox' as const },
+  {
+    id: 'rotate',
+    label: 'Rotate',
+    type: 'select' as const,
+    options: [
+      { value: '0', label: '0°' },
+      { value: '90', label: '90°' },
+      { value: '180', label: '180°' },
+      { value: '270', label: '270°' },
+    ],
+  },
+]
+---
+
+<div class="filters-panel" id="filtersPanel" data-filters-interface>
+  <h3>Filter Controls</h3>
+  <div class="filter-grid">
+    {controls.map((control) => <FilterControl {...control} />)}
+  </div>
+  <div id="filterStatus" class="filter-status"></div>
+</div>
+
+<script>
+  import { initializeFiltersInterface } from '../lib/filters-interface'
+
+  initializeFiltersInterface()
+</script>
+
+<style>
+  .filters-panel { max-width: 1200px; margin: 0 auto 2rem; padding: 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 0.5rem; box-shadow: inset 0 1px 0 rgb(255 255 255 / 4%); }
+  .filters-panel h3 { margin: 0 0 1rem; }
+  .filter-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
+  .filter-status { display: none; margin-top: 1rem; padding: 0.5rem; color: var(--warning); font-size: 0.875rem; text-align: center; background: var(--warning-bg); border-radius: 0.3rem; }
+</style>

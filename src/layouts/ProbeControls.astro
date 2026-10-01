@@ -1,0 +1,32 @@
+---
+import ProbeButton from '../components/ProbeButton.astro'
+---
+
+<div class="probe-panel">
+  <div class="probe-controls">
+    <ProbeButton id="startBtn" label="Start Probe" variant="primary" />
+    <ProbeButton id="stopBtn" label="Stop Probe" disabled />
+    <ProbeButton id="testStreamBtn" label="Test Stream" />
+    <ProbeButton id="clearBtn" label="Clear Log" />
+    <ProbeButton id="downloadBtn" label="Download Trace" disabled />
+  </div>
+  <div class="probe-options">
+    <label class="checkbox-label">
+      <input type="checkbox" id="annotationToggle" checked />
+      <span>Send annotation overlay over HTTP</span>
+    </label>
+  </div>
+  <div id="status" class="status">Ready</div>
+</div>
+
+<style>
+  .probe-panel { margin-bottom: 2rem; padding: 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 0.5rem; }
+  .probe-controls { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1rem; }
+  .probe-options { margin-bottom: 1rem; }
+  .checkbox-label { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
+  .checkbox-label input[type='checkbox'] { width: 1.25rem; height: 1.25rem; accent-color: var(--cf-orange); }
+  .status { padding: 0.5rem 0; font-weight: 500; }
+  .status-error { color: var(--error); }
+  .status-success { color: var(--success); }
+  .status-warning { color: var(--warning); }
+</style>

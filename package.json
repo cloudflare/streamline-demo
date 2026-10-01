@@ -1,0 +1,52 @@
+{
+  "name": "streamline-demo",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "prepare:config": "node scripts/prepare-deployment-config.mjs",
+    "predev": "npm run prepare:config",
+    "dev": "STREAMLINE_LOCAL_DEV=1 astro dev",
+    "predev:container": "npm run prepare:config",
+    "dev:container": "node scripts/start-local.mjs",
+    "dev:container:clean": "node scripts/start-local.mjs --clean",
+    "pretest": "npm run build:owner",
+    "test": "node --experimental-strip-types --test test/*.test.ts",
+    "types:worker": "npm run prepare:config && wrangler types",
+    "typecheck": "npm run types:worker && astro check --minimumFailingSeverity error && tsc --project tsconfig.worker.json && tsc --project tsconfig.test.json && tsc --project tsconfig.scripts.json",
+    "prebuild:owner": "npm run prepare:config",
+    "build": "npm run build:owner",
+    "build:owner": "CLOUDFLARE_ENV= astro build && node scripts/verify-build-profile.mjs owner",
+    "prebuild:playground": "npm run prepare:config",
+    "build:playground": "CLOUDFLARE_ENV=playground astro build && node scripts/verify-build-profile.mjs playground",
+    "preview": "npm run build:owner && CLOUDFLARE_ENV= wrangler dev",
+    "deploy": "npm run deploy:owner",
+    "deploy:owner": "env -u CLOUDFLARE_API_TOKEN npm run secrets:check && npm run build:owner && env -u CLOUDFLARE_API_TOKEN wrangler deploy --config dist/server/wrangler.json",
+    "deploy:dry-run": "npm run deploy:owner:dry-run",
+    "deploy:owner:dry-run": "npm run build:owner && env -u CLOUDFLARE_API_TOKEN wrangler deploy --config dist/server/wrangler.json --dry-run",
+    "deploy:playground": "npm run build:playground && env -u CLOUDFLARE_API_TOKEN wrangler deploy --config dist/server/wrangler.json",
+    "deploy:playground:dry-run": "npm run build:playground && env -u CLOUDFLARE_API_TOKEN wrangler deploy --config dist/server/wrangler.json --dry-run",
+    "access:plan": "node scripts/configure-access.mjs --phase prepare",
+    "access:prepare": "node scripts/configure-access.mjs --phase prepare --apply",
+    "access:lock": "node scripts/configure-access.mjs --phase lock --apply",
+    "secrets:check": "node scripts/check-owner-secrets.mjs",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^14.1.4",
+    "@cloudflare/containers": "^0.3.7",
+    "@cloudflare/streamline": "^0.1.0",
+    "astro": "^7.1.3",
+    "hls.js": "^1.7.1",
+    "jose": "^6.2.10"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@types/node": "^26.4.1",
+    "typescript": "^6.0.3",
+    "wrangler": "^4.127.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

@@ -1,0 +1,24 @@
+---
+interface Props {
+  title: string
+  playbackState?: boolean
+}
+
+const { title, playbackState = false } = Astro.props
+---
+
+<div class="dash-card">
+  <h3>{title}{playbackState && <span id="playbackState" class="playback-state idle"></span>}</h3>
+  <slot />
+</div>
+
+<style>
+  .dash-card { padding: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: 0.5rem; }
+  .dash-card h3 { margin-top: 0; margin-bottom: 0.75rem; font-size: 1.1rem; }
+  .playback-state { display: inline-block; width: 10px; height: 10px; margin-left: 0.5rem; border-radius: 50%; }
+  .playback-state.idle { background: var(--text-subtle); }
+  .playback-state.playing { background: var(--success); }
+  .playback-state.waiting { background: var(--warning); }
+  .playback-state.stalled { background: var(--error); }
+  .playback-state.seeking { background: var(--info); }
+</style>

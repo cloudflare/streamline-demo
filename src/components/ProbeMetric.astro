@@ -1,0 +1,15 @@
+---
+interface Props {
+  label: string
+  id: string
+}
+
+const { label, id } = Astro.props
+---
+
+<div class="metric"><span class="metric-label">{label}:</span> <span id={id}>-</span></div>
+
+<style>
+  .metric { display: flex; justify-content: space-between; gap: 0.5rem; padding: 0.35rem 0; border-bottom: 1px solid var(--border); color: var(--text); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.78rem; }
+  .metric-label { color: var(--text-subtle); font-family: Inter, ui-sans-serif, sans-serif; }
+</style>

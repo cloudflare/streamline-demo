@@ -1,0 +1,55 @@
+---
+interface Option {
+  value: string
+  label: string
+}
+
+interface Props {
+  id: string
+  label: string
+  hint: string
+  kind: 'text' | 'number' | 'select'
+  containerId?: string
+  hidden?: boolean
+  placeholder?: string
+  value?: string
+  min?: string
+  max?: string
+  step?: string
+  options?: Option[]
+}
+
+const {
+  id,
+  label,
+  hint,
+  kind,
+  containerId,
+  hidden = false,
+  placeholder,
+  value,
+  min,
+  max,
+  step,
+  options = [],
+} = Astro.props
+---
+
+<div class="field" id={containerId} style={hidden ? 'display: none;' : undefined}>
+  <label for={id}>{label}</label>
+  {kind === 'select' ? (
+    <select id={id}>
+      {options.map((option) => <option value={option.value}>{option.label}</option>)}
+    </select>
+  ) : (
+    <input type={kind} id={id} placeholder={placeholder} value={value} min={min} max={max} step={step} />
+  )}
+  <p class="hint">{hint}</p>
+</div>
+
+<style>
+  .field { margin-bottom: 1.5rem; }
+  label { display: block; margin-bottom: 0.5rem; color: var(--text-muted); font-weight: 600; }
+  input, select { box-sizing: border-box; width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 0.3rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 1rem; }
+  .hint { margin: 0.5rem 0 0; color: var(--text-muted); font-size: 0.875rem; }
+</style>

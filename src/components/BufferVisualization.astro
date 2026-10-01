@@ -1,0 +1,16 @@
+<div class="buffer-viz">
+  <div class="buffer-bar" id="bufferBar">
+    <div class="buffer-gradient" id="bufferGradient"></div>
+    <div class="buffer-fill-line" id="bufferFillLine"></div>
+  </div>
+  <div class="buffer-info"><span>0s</span><span>2.5s</span><span>5s</span></div>
+</div>
+
+<style>
+  .buffer-viz { margin-top: 0.75rem; }
+  .buffer-bar { position: relative; height: 0.75rem; overflow: hidden; background: var(--surface-muted); border: 1px solid var(--border); border-radius: 999px; }
+  .buffer-bar.no-data { background: #0d1016; }
+  .buffer-gradient { position: absolute; inset: 0; }
+  .buffer-fill-line { position: absolute; top: 0; bottom: 0; display: none; width: 2px; background: var(--cf-orange); }
+  .buffer-info { display: flex; justify-content: space-between; margin-top: 0.25rem; color: var(--text-subtle); font-size: 0.75rem; }
+</style>

@@ -1,0 +1,19 @@
+---
+interface Props {
+  id: string
+  name: string
+  value: string
+  label: string
+  checked?: boolean
+  hidden?: boolean
+}
+
+const { id, name, value, label, checked = false, hidden = false } = Astro.props
+---
+
+<label class="radio-label" style={hidden ? 'display: none;' : undefined}><input type="radio" {name} {value} {id} checked={checked} /> <span>{label}</span></label>
+
+<style>
+  .radio-label { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-weight: 500; }
+  .radio-label input[type='radio'] { width: 1.125rem; height: 1.125rem; accent-color: var(--cf-orange); }
+</style>

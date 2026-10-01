@@ -1,0 +1,23 @@
+---
+import PageFrame from './PageFrame.astro'
+import ProbeControls from './ProbeControls.astro'
+import ProbeDashboard from './ProbeDashboard.astro'
+import ProbeEventLog from './ProbeEventLog.astro'
+---
+
+<PageFrame
+  title="Stream Probe (Durable Relay)"
+  description="Connects the browser to a Durable Object, starts the container over a short HTTP call, then receives media published by the container over an outbound WebSocket."
+>
+  <div data-probe-interface>
+    <ProbeControls />
+    <ProbeDashboard />
+    <ProbeEventLog />
+  </div>
+</PageFrame>
+
+<script>
+  import { initializeProbeInterface } from '../lib/probe-interface'
+
+  initializeProbeInterface()
+</script>

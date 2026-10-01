@@ -1,0 +1,22 @@
+---
+interface Props {
+  label: string
+  hint: string
+  hintHtml?: string
+  containerId?: string
+  hidden?: boolean
+}
+
+const { label, hint, hintHtml, containerId, hidden = false } = Astro.props
+---
+
+<div class="field" id={containerId} style={hidden ? 'display: none;' : undefined}>
+  <label>{label}</label>
+  {hintHtml ? <p class="hint" set:html={hintHtml} /> : <p class="hint">{hint}</p>}
+</div>
+
+<style>
+  .field { margin-bottom: 1.5rem; }
+  label { display: block; margin-bottom: 0.5rem; color: var(--text-muted); font-weight: 600; }
+  .hint { margin: 0.5rem 0 0; color: var(--text-muted); font-size: 0.875rem; }
+</style>

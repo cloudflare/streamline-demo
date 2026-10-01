@@ -1,0 +1,21 @@
+---
+import Layout from '../layouts/Layout.astro'
+import StreamingInterface from '../layouts/StreamingInterface.astro'
+
+const howItWorksSteps = [
+  'Click <strong>Start Streaming</strong> to load the stream source and prime a transparent annotation canvas',
+  'Draw on the local preview. On each completed stroke, the browser uploads the latest raw PNG snapshot over HTTP',
+  'Webcam chunks are uploaded over HTTP, while direct input URLs are pulled by the container',
+  'The container decodes the PNG snapshots and composites the annotation layer into the video stream',
+  'Processed preview media returns through Durable Relay, or the container sends it to your RTMP destination',
+]
+---
+
+<Layout title="Streamline Demo — Annotation">
+  <StreamingInterface
+    title="Browser Annotation Overlay"
+    description="Draw directly on the live stream preview and have each completed stroke composited onto the encoded stream in the container. Supports webcam, HLS VOD, and RTMPS live input sources."
+    annotationMode={true}
+    howItWorksSteps={howItWorksSteps}
+  />
+</Layout>

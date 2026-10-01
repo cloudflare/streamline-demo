@@ -1,0 +1,9 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "types": ["astro/client", "node"]
+  },
+  "include": ["test/**/*.ts"],
+  "exclude": ["worker-configuration.d.ts"]
+}

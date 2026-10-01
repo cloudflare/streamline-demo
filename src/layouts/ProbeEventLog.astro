@@ -1,0 +1,20 @@
+<div class="event-log">
+  <h3>Event Log <span id="eventCount" class="event-count">(0)</span></h3>
+  <div id="eventLog" class="event-log-content">
+    <div class="event-placeholder">Events will appear here when probe is running.</div>
+  </div>
+</div>
+
+<style>
+  .event-log { padding: 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 0.5rem; }
+  .event-log h3 { margin-top: 0; margin-bottom: 0.75rem; }
+  .event-count { color: var(--text-subtle); font-weight: normal; font-size: 0.9rem; }
+  .event-log-content { max-height: 400px; overflow-y: auto; padding: 0.75rem; background: #0d1016; border: 1px solid var(--border); border-radius: 0.3rem; font-family: monospace; font-size: 0.85rem; }
+  .event-placeholder { color: var(--text-subtle); font-style: italic; }
+  :global(.event) { padding: 0.15rem 0; border-bottom: 1px solid var(--border); }
+  :global(.event-http-start), :global(.event-annotation-sent), :global(.event-video-recovery) { color: var(--info); }
+  :global(.event-http-ingest-error), :global(.event-annotation-error), :global(.event-video-stalled), :global(.event-mse-error), :global(.event-append-error), :global(.event-buffer-gap) { color: var(--error); }
+  :global(.event-video-waiting), :global(.event-quota-exceeded) { color: var(--warning); }
+  :global(.event-video-playing) { color: var(--success); }
+  :global(.event-drift-sample) { color: var(--text-muted); }
+</style>

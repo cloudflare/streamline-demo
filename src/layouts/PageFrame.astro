@@ -1,0 +1,47 @@
+---
+interface Props {
+  title: string
+  description: string
+  narrow?: boolean
+  compactOnMobile?: boolean
+}
+
+const { title, description, narrow = false, compactOnMobile = false } = Astro.props
+---
+
+<main class:list={['page-frame', { 'page-frame-narrow': narrow, 'page-frame-compact': compactOnMobile }]}>
+  <h1>{title}</h1>
+  <p class="description">{description}</p>
+  <slot />
+</main>
+
+<style>
+  .page-frame {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .page-frame-narrow {
+    max-width: 800px;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.045em;
+    line-height: 1.05;
+  }
+
+  .description {
+    margin-bottom: 2rem;
+    max-width: 70ch;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 600px) {
+    .page-frame-compact {
+      padding: 1rem;
+    }
+  }
+</style>

@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro'
+import FilterPanel from '../layouts/FilterPanel.astro'
+import StreamingInterface from '../layouts/StreamingInterface.astro'
+
+const howItWorksSteps = [
+  'Click <strong>Start Streaming</strong> to process the selected input source',
+  'The browser posts the selected filter operations to the container over HTTP',
+  'The container builds a filter chain from your slider settings and applies it to the video stream',
+  'Adjust the sliders to automatically restart the stream with the new filters',
+  'Processed preview media returns through Durable Relay, or the container sends it to your RTMP destination',
+]
+---
+
+<Layout title="Streamline Demo — Filters">
+  <StreamingInterface
+    title="Real-Time Video Filters"
+    description="Apply adjustable filters in the container to the selected input source. Drag the sliders to set the effect and the stream will automatically restart with the new settings."
+    preset="filters"
+    howItWorksSteps={howItWorksSteps}
+  >
+    <FilterPanel />
+  </StreamingInterface>
+</Layout>

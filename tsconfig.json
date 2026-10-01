@@ -1,0 +1,9 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "exclude": [
+    "dist",
+    "test",
+    "src/worker.ts",
+    "worker-configuration.d.ts"
+  ]
+}

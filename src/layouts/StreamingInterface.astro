@@ -1,0 +1,415 @@
+---
+interface Props {
+  title: string
+  description: string
+  preset?: string
+  showOverlayPreview?: boolean
+  annotationMode?: boolean
+  howItWorksSteps: string[]
+}
+
+const {
+  title,
+  description,
+  preset = 'passthrough',
+  showOverlayPreview = false,
+  annotationMode = false,
+  howItWorksSteps,
+} = Astro.props
+
+const previewDebugBuild = '2026-08-26-durable-relay-core-v1'
+---
+
+<main
+  class="container"
+  data-streaming-interface
+  data-preset={preset}
+  data-annotation-mode={String(annotationMode)}
+  data-preview-debug-build={previewDebugBuild}
+>
+  <h1>{title}</h1>
+  <p class="description">
+    {description}
+    <br />
+    <slot name="extra-links" />
+  </p>
+
+  <div class="video-grid">
+    <div class="video-panel">
+      <h2>Local Preview</h2>
+      <div class="local-preview-frame">
+        <video id="localVideo" autoplay playsinline muted></video>
+        {annotationMode && <canvas id="annotationCanvas" class="annotation-canvas"></canvas>}
+      </div>
+      <div class="controls">
+        <button id="startBtn" class="btn btn-primary">Start Streaming</button>
+        <button id="stopBtn" class="btn btn-secondary" disabled>Stop Streaming</button>
+      </div>
+      <div id="status" class="status status-info">Ready</div>
+
+      {annotationMode && (
+        <div class="annotation-tools">
+          <button id="clearAnnotationsBtn" class="btn btn-secondary" disabled>Clear Annotations</button>
+          <p class="annotation-copy">Draw on the local preview. Each completed stroke is sent as a PNG over HTTP.</p>
+        </div>
+      )}
+
+      {showOverlayPreview && (
+        <div class="overlay-preview">
+          <p class="overlay-label" id="overlayLabel">Logo to be overlaid:</p>
+          <img src="/cf-logo.png" alt="Cloudflare logo" class="overlay-logo" />
+        </div>
+      )}
+    </div>
+
+    <div class="video-panel">
+      <h2 id="outputTitle">Stream Output</h2>
+      <div id="streamOutputWrapper" class="player-wrapper">
+        <iframe
+          id="streamPlayer"
+          loading="lazy"
+          allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+          allowfullscreen="true"
+          class="stream-player"
+          style="display: none;"
+        ></iframe>
+        <div id="playerContainer" class="player-placeholder">
+          <p>Stream will appear here when live.</p>
+          <p class="hint">
+            Configure the matching <strong>output Stream profile</strong> in
+            <a href="/settings">Settings</a> to derive the player URL.
+          </p>
+        </div>
+      </div>
+      <video id="previewVideo" playsinline controls autoplay muted class="preview-video" style="display: none;"></video>
+      <div id="previewDebugOverlay" class="preview-debug-overlay" style="display: none;">
+        <div class="debug-row"><span class="debug-label">Chunks:</span> <span id="debugChunks">-</span></div>
+        <div class="debug-row"><span class="debug-label">Buffer:</span> <span id="debugBuffer">-</span></div>
+        <div class="debug-row"><span class="debug-label">Drift:</span> <span id="debugDrift">-</span></div>
+        <div class="debug-row"><span class="debug-label">Rate:</span> <span id="debugRate">-</span></div>
+        <div class="debug-row"><span class="debug-label">State:</span> <span id="debugState">-</span></div>
+      </div>
+    </div>
+  </div>
+
+  <slot />
+
+  <div class="info">
+    <h3>How it works</h3>
+    <ol>
+      {howItWorksSteps.map((step) => <li set:html={step} />)}
+    </ol>
+  </div>
+</main>
+
+<script>
+  import { initializeStreamingInterface } from '../lib/streaming-interface'
+
+  initializeStreamingInterface()
+</script>
+
+<style>
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.045em;
+    line-height: 1.05;
+  }
+
+  .description {
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    max-width: 70ch;
+  }
+
+  .video-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .video-panel {
+    position: relative;
+    padding: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+  }
+
+  .video-panel h2 {
+    margin-top: 0;
+    font-size: 1.25rem;
+  }
+
+  .local-preview-frame {
+    position: relative;
+  }
+
+  video {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    background: #050608;
+    border: 1px solid var(--border);
+    border-radius: 0.3rem;
+  }
+
+  .annotation-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0.3rem;
+    cursor: crosshair;
+    touch-action: none;
+  }
+
+  .annotation-tools {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    padding: 0.875rem;
+    border: 1px solid rgb(246 130 31 / 45%);
+    border-radius: 0.4rem;
+    background: var(--cf-orange-soft);
+  }
+
+  .annotation-copy {
+    margin: 0;
+    color: #ffd0a8;
+    font-size: 0.875rem;
+  }
+
+  .preview-video {
+    display: none;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #050608;
+    border: 1px solid var(--border);
+    border-radius: 0.3rem;
+  }
+
+  .player-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    color: var(--text-subtle);
+    background: #050608;
+    border: 1px solid var(--border);
+    border-radius: 0.3rem;
+  }
+
+  .player-wrapper {
+    position: relative;
+    height: 0;
+    padding-bottom: 56.25%;
+    overflow: hidden;
+    background: #050608;
+    border: 1px solid var(--border);
+    border-radius: 0.3rem;
+  }
+
+  .stream-player {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .controls {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .status {
+    margin-top: 0.75rem;
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+    font-family: monospace;
+    font-size: 0.875rem;
+  }
+
+  .status-info {
+    color: var(--info);
+    background: var(--info-bg);
+  }
+
+  .status-success {
+    color: var(--success);
+    background: var(--success-bg);
+  }
+
+  .status-error {
+    color: var(--error);
+    background: var(--error-bg);
+  }
+
+  .status-warning {
+    color: var(--warning);
+    background: var(--warning-bg);
+  }
+
+  .info {
+    padding: 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+  }
+
+  .info h3 {
+    margin-top: 0;
+  }
+
+  .info ol {
+    padding-left: 1.5rem;
+  }
+
+  .info li {
+    margin-bottom: 0.5rem;
+  }
+
+  .overlay-preview {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    text-align: center;
+    background: repeating-conic-gradient(#252b35 0% 25%, #323946 0% 50%) 50% / 20px 20px;
+    border: 1px solid var(--border);
+    border-radius: 0.3rem;
+  }
+
+  .overlay-label {
+    margin: 0 0 0.5rem;
+    color: var(--text);
+    font-size: 0.875rem;
+    text-shadow: 0 1px 2px rgb(0 0 0 / 50%);
+  }
+
+  .overlay-logo {
+    max-width: 150px;
+    height: auto;
+  }
+
+  .hint {
+    margin: 0.5rem 0;
+    font-size: 0.875rem;
+  }
+
+  .hint a {
+    color: var(--cf-orange-hover);
+  }
+
+  .preview-debug-overlay {
+    position: absolute;
+    bottom: 0.5rem;
+    left: 0.5rem;
+    z-index: 10;
+    padding: 0.5rem 0.75rem;
+    color: #80e89d;
+    font-family: monospace;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    pointer-events: none;
+    background: rgb(9 11 15 / 84%);
+    border: 1px solid var(--border);
+    border-radius: 0.3rem;
+  }
+
+  .debug-label {
+    margin-right: 0.35rem;
+    color: var(--text-subtle);
+  }
+
+  .debug-row {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  :global(.stream-source-info) {
+    width: 100%;
+    overflow: hidden;
+    color: var(--text);
+    background: #050608;
+    border: 1px solid var(--border);
+    border-radius: 0.3rem;
+  }
+
+  :global(.stream-source-card) {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: #050608;
+  }
+
+  :global(.stream-source-thumbnail) {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+  }
+
+  :global(.stream-source-live) {
+    background: radial-gradient(circle at top, rgb(246 130 31 / 30%), transparent 35%), #050608;
+  }
+
+  :global(.stream-source-copy) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    width: 100%;
+    padding: 1rem;
+    font-size: 0.875rem;
+    background: rgb(9 11 15 / 84%);
+  }
+
+  :global(.stream-source-badge) {
+    width: fit-content;
+    padding: 0.25rem 0.5rem;
+    color: var(--text);
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: var(--cf-orange);
+    border-radius: 0.2rem;
+  }
+
+  :global(.stream-source-mono) {
+    overflow-wrap: anywhere;
+    font-family: monospace;
+  }
+
+  :global(.stream-source-pill) {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.4rem 0.65rem;
+    color: var(--cf-orange-hover);
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: var(--cf-orange-soft);
+    border: 1px solid rgb(246 130 31 / 60%);
+    border-radius: 999px;
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      padding: 1rem;
+    }
+
+    .video-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,29 @@
+---
+import SettingsRadioOption from '../components/SettingsRadioOption.astro'
+
+interface Option {
+  id: string
+  value: string
+  label: string
+  checked?: boolean
+  hidden?: boolean
+}
+
+interface Props {
+  name: string
+  options: Option[]
+  hint: string
+}
+
+const { name, options, hint } = Astro.props
+---
+
+<div class="field-radio-group">
+  {options.map((option) => <SettingsRadioOption name={name} {...option} />)}
+  <p class="hint">{hint}</p>
+</div>
+
+<style>
+  .field-radio-group { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; }
+  .hint { margin: 0.5rem 0 0; color: var(--text-muted); font-size: 0.875rem; }
+</style>

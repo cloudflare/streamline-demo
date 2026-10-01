@@ -1,0 +1,63 @@
+---
+import BufferVisualization from '../components/BufferVisualization.astro'
+import ProbeMetric from '../components/ProbeMetric.astro'
+import ProbeDashboardCard from './ProbeDashboardCard.astro'
+
+const sessionMetrics = [
+  { label: 'Duration', id: 'dashDuration' },
+  { label: 'Relay messages', id: 'dashChunks' },
+  { label: 'Bytes', id: 'dashBytes' },
+  { label: 'Throughput (10s)', id: 'dashThroughput' },
+  { label: 'Interarrival jitter', id: 'dashJitter' },
+  { label: 'Last message', id: 'dashLastChunk' },
+  { label: 'Status', id: 'dashStatus' },
+]
+
+const bufferMetrics = [
+  { label: 'Latest', id: 'dashLatest' },
+  { label: 'Current', id: 'dashCurrent' },
+  { label: 'Buffer fill', id: 'dashDrift' },
+  { label: 'Gaps', id: 'dashGaps' },
+  { label: 'Ranges', id: 'dashRanges' },
+]
+
+const playbackMetrics = [
+  { label: 'Startup', id: 'dashStartup' },
+  { label: 'Speed', id: 'dashSpeed' },
+  { label: 'Stalls', id: 'dashStalls' },
+  { label: 'Avg recovery', id: 'dashRecovery' },
+  { label: 'Playing', id: 'dashPlaying' },
+  { label: 'Seeking', id: 'dashSeeking' },
+]
+
+const producerMetrics = [
+  { label: 'State', id: 'dashProducerState' },
+  { label: 'ffmpeg speed', id: 'dashFfmpegSpeed' },
+  { label: 'ffmpeg FPS', id: 'dashFfmpegFps' },
+  { label: 'ffmpeg bitrate', id: 'dashFfmpegBitrate' },
+  { label: 'Progress age', id: 'dashProgressAge' },
+  { label: 'Output age', id: 'dashOutputAge' },
+  { label: 'Restarts', id: 'dashRestarts' },
+  { label: 'Relay queue', id: 'dashRelayQueue' },
+  { label: 'MSE queue', id: 'dashMseQueue' },
+]
+---
+
+<div class="probe-dashboard" id="dashboard" style="display: none;">
+  <div class="dash-grid">
+    <ProbeDashboardCard title="Session">{sessionMetrics.map((metric) => <ProbeMetric {...metric} />)}</ProbeDashboardCard>
+    <ProbeDashboardCard title="Buffer Health">
+      {bufferMetrics.map((metric) => <ProbeMetric {...metric} />)}
+      <BufferVisualization />
+    </ProbeDashboardCard>
+    <ProbeDashboardCard title="Playback" playbackState>{playbackMetrics.map((metric) => <ProbeMetric {...metric} />)}</ProbeDashboardCard>
+    <ProbeDashboardCard title="Producer">{producerMetrics.map((metric) => <ProbeMetric {...metric} />)}</ProbeDashboardCard>
+    <ProbeDashboardCard title="Thumbnail"><video id="probeVideo" playsinline muted class="probe-video"></video></ProbeDashboardCard>
+  </div>
+</div>
+
+<style>
+  .probe-dashboard { margin-bottom: 2rem; }
+  .dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+  .probe-video { width: 100%; max-height: 200px; background: #050608; border: 1px solid var(--border); border-radius: 0.3rem; }
+</style>

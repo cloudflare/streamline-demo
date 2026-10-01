@@ -1,0 +1,52 @@
+---
+interface Option {
+  value: string
+  label: string
+}
+
+interface Props {
+  id: string
+  label: string
+  type: 'range' | 'checkbox' | 'select'
+  value?: string
+  min?: string
+  max?: string
+  step?: string
+  valueId?: string
+  options?: Option[]
+}
+
+const { id, label, type, value, min, max, step, valueId, options = [] } = Astro.props
+---
+
+<div class="filter-control">
+  {type === 'checkbox' ? (
+    <label class="checkbox-label">
+      <input type="checkbox" id={id} />
+      <span>{label}</span>
+    </label>
+  ) : type === 'select' ? (
+    <>
+      <label for={id}>{label}</label>
+      <select id={id}>
+        {options.map((option) => <option value={option.value}>{option.label}</option>)}
+      </select>
+    </>
+  ) : (
+    <>
+      <label for={id}>{label}</label>
+      <input type="range" id={id} min={min} max={max} step={step} value={value} />
+      <span class="filter-value" id={valueId}>{value}</span>
+    </>
+  )}
+</div>
+
+<style>
+  .filter-control { display: flex; flex-direction: column; gap: 0.25rem; }
+  .filter-control label { color: var(--text-muted); font-size: 0.875rem; font-weight: 600; }
+  .filter-control input[type='range'] { width: 100%; }
+  .filter-control select { padding: 0.5rem; border: 1px solid var(--border); border-radius: 4px; font-size: 1rem; }
+  .filter-value { color: var(--text-subtle); font-family: monospace; font-size: 0.875rem; }
+  .checkbox-label { align-items: center; cursor: pointer; display: flex; gap: 0.5rem; }
+  .checkbox-label input[type='checkbox'] { accent-color: var(--cf-orange); height: 1.25rem; width: 1.25rem; }
+</style>

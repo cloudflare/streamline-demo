@@ -1,0 +1,110 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "your-streamline-owner",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-05-26",
+  "compatibility_flags": [
+    "global_fetch_strictly_public",
+    "enable_request_signal",
+    "request_signal_passthrough"
+  ],
+  "dev": {
+    "enable_containers": false
+  },
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": true
+  },
+  "observability": {
+    "enabled": true
+  },
+  "vars": {
+    "DEPLOYMENT_PROFILE": "owner",
+    "ACCESS_TEAM_DOMAIN": "disabled.invalid",
+    "ACCESS_OWNER_AUD": "disabled",
+    "ACCESS_OWNER_EMAIL": "owner@example.invalid",
+    "ACCESS_EMPLOYEE_EMAIL_DOMAIN": "example.invalid",
+    "MEDIA_PROFILE_ID": "default",
+    "PUBLISHER_ACCESS_REQUIRED": "true",
+    "MAX_SESSION_DURATION_SECONDS": "28800",
+    "ALLOWED_ORIGINS": "https://example.invalid"
+  },
+  "containers": [
+    {
+      "name": "your-streamline-owner-media",
+      "class_name": "MediaContainer",
+      "image": "registry.example.invalid/cloudflare/streamline:0.0.0",
+      "instance_type": "standard-4",
+      "max_instances": 1
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "MEDIA_CONTAINER",
+        "class_name": "MediaContainer"
+      },
+      {
+        "name": "PLAYGROUND_COORDINATOR",
+        "class_name": "PlaygroundCoordinator"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["MediaContainer"]
+    },
+    {
+      "tag": "v2",
+      "new_sqlite_classes": ["PlaygroundCoordinator"]
+    }
+  ],
+  "env": {
+    "playground": {
+      "name": "your-streamline-playground",
+      "workers_dev": true,
+      "preview_urls": false,
+      "assets": {
+        "directory": "./dist",
+        "binding": "ASSETS",
+        "run_worker_first": true
+      },
+      "vars": {
+        "DEPLOYMENT_PROFILE": "playground",
+        "ACCESS_TEAM_DOMAIN": "disabled.invalid",
+        "ACCESS_OWNER_AUD": "disabled",
+        "ACCESS_OWNER_EMAIL": "owner@example.invalid",
+        "ACCESS_EMPLOYEE_EMAIL_DOMAIN": "example.invalid",
+        "MEDIA_PROFILE_ID": "default",
+        "PUBLISHER_ACCESS_REQUIRED": "false",
+        "MAX_SESSION_DURATION_SECONDS": "1800",
+        "ALLOWED_ORIGINS": "https://example.invalid",
+        "PLAYGROUND_TURNSTILE_HOSTNAMES": "localhost,127.0.0.1,example.invalid",
+        "PLAYGROUND_TURNSTILE_ACTION": "streamline-playground"
+      },
+      "containers": [
+        {
+          "name": "your-streamline-playground-media",
+          "class_name": "MediaContainer",
+          "image": "registry.example.invalid/cloudflare/streamline:0.0.0",
+          "instance_type": "standard-4",
+          "max_instances": 3
+        }
+      ],
+      "durable_objects": {
+        "bindings": [
+          {
+            "name": "MEDIA_CONTAINER",
+            "class_name": "MediaContainer"
+          },
+          {
+            "name": "PLAYGROUND_COORDINATOR",
+            "class_name": "PlaygroundCoordinator"
+          }
+        ]
+      }
+    }
+  }
+}

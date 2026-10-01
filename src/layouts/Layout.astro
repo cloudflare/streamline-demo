@@ -1,0 +1,175 @@
+---
+interface Props {
+  title?: string
+}
+
+const { title = 'Streamline Demo' } = Astro.props
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <nav class="top-nav">
+      <a href="/" class="nav-brand">
+        <img src="/streamline.svg" alt="" class="nav-logo" width="28" height="28" />
+        <span>Streamline</span>
+      </a>
+      <div class="nav-links">
+        <a href="/">Pass-Through</a>
+        <a href="/overlay">Overlay</a>
+        <a href="/annotation">Annotation</a>
+        <a href="/pip">Picture-in-Picture</a>
+        <a href="/filters">Filters</a>
+        <a href="/subtitles">Subtitles</a>
+        <a href="/probe" data-owner-only>Probe</a>
+        <a href="/settings" class="settings-link">Settings</a>
+      </div>
+    </nav>
+    <slot />
+  </body>
+<script src="../lib/playground-navigation.ts"></script>
+
+</html>
+
+<style>
+  :global(:root) {
+    color-scheme: dark;
+    --cf-orange: #f6821f;
+    --cf-orange-hover: #ff9d45;
+    --cf-orange-soft: rgb(246 130 31 / 16%);
+    --page-bg: #0b0d12;
+    --surface: #151922;
+    --surface-raised: #1c212c;
+    --surface-muted: #11151d;
+    --border: #303743;
+    --border-strong: #485161;
+    --text: #f5f7fa;
+    --text-muted: #a8b0bd;
+    --text-subtle: #7f8998;
+    --success: #6fda91;
+    --success-bg: rgb(32 121 74 / 28%);
+    --error: #ff8787;
+    --error-bg: rgb(168 49 49 / 28%);
+    --warning: #f8c15a;
+    --warning-bg: rgb(143 96 15 / 28%);
+    --info: #7db7ff;
+    --info-bg: rgb(34 86 145 / 30%);
+  }
+
+  :global(*) { box-sizing: border-box; }
+
+  :global(html),
+  :global(body) {
+    margin: 0;
+    width: 100%;
+    min-height: 100%;
+    background: var(--page-bg);
+    color: var(--text);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    line-height: 1.5;
+  }
+
+  :global(button),
+  :global(input),
+  :global(select) { font: inherit; }
+
+  :global(.btn) {
+    padding: 0.7rem 1.1rem;
+    border: 1px solid transparent;
+    border-radius: 0.35rem;
+    color: var(--text);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, color 0.2s, opacity 0.2s;
+  }
+
+  :global(.btn:hover:not(:disabled)) { border-color: var(--border-strong); }
+  :global(.btn:disabled) { cursor: not-allowed; opacity: 0.45; }
+  :global(.btn-primary) { background: var(--cf-orange); color: #111; }
+  :global(.btn-primary:hover:not(:disabled)) { background: var(--cf-orange-hover); }
+  :global(.btn-secondary) { border-color: var(--border); background: var(--surface-raised); }
+  :global(.btn-secondary:hover:not(:disabled)) { background: #252c38; }
+  :global(input),
+  :global(select) { color: var(--text); background: var(--surface-muted); border-color: var(--border); }
+  :global(input:focus),
+  :global(select:focus) { outline: 2px solid rgb(246 130 31 / 45%); outline-offset: 2px; border-color: var(--cf-orange); }
+  :global(a) { color: var(--cf-orange-hover); }
+
+  .top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.9rem 1.5rem;
+    background: #11151d;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .nav-logo {
+    width: 28px;
+    height: 28px;
+    display: block;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1.25rem;
+    align-items: center;
+  }
+
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 0.2s, background 0.2s;
+  }
+
+  .nav-links a:hover {
+    color: var(--text);
+  }
+
+  .settings-link {
+    background: var(--cf-orange);
+    color: #111 !important;
+    padding: 0.35rem 0.75rem;
+    border-radius: 0.3rem;
+    font-weight: 700;
+  }
+
+  .settings-link:hover {
+    background: var(--cf-orange-hover);
+  }
+
+  @media (max-width: 600px) {
+    .top-nav {
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0.75rem;
+    }
+
+    .nav-links {
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+</style>

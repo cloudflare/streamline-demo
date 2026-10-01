@@ -1,0 +1,19 @@
+---
+import PageFrame from './PageFrame.astro'
+import SettingsForm from './SettingsForm.astro'
+---
+
+<PageFrame
+  title="Settings"
+  description="Select how Streamline uses the server-managed Cloudflare Stream profile. Non-secret display preferences are stored locally in your browser."
+  narrow
+  compactOnMobile
+>
+  <SettingsForm />
+</PageFrame>
+
+<script>
+  import { initializeSettingsInterface } from '../lib/settings-interface'
+
+  initializeSettingsInterface()
+</script>

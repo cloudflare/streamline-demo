@@ -1,0 +1,21 @@
+---
+import Layout from '../layouts/Layout.astro'
+import StreamingInterface from '../layouts/StreamingInterface.astro'
+
+const howItWorksSteps = [
+  'Click <strong>Start Streaming</strong> to process the selected input source',
+  'Webcam input is chunked in the browser; HLS uses a validated URL and the container resolves RTMPS from the server profile',
+  'The browser starts the container over HTTP and sends webcam chunks over the HTTP ingest endpoint',
+  'The container processes the incoming media stream',
+  'Processed preview media returns through Durable Relay, or the container sends it to your RTMP destination',
+]
+---
+
+<Layout title="Streamline Demo — Pass-Through">
+  <StreamingInterface
+    title="Video Pass-Through"
+    description="Process the selected input source without adding effects, then return the result to Local Preview or forward it to your configured destination. Webcam input is sent from the browser; HLS and RTMPS inputs are pulled directly by the container."
+    preset="passthrough"
+    howItWorksSteps={howItWorksSteps}
+  />
+</Layout>

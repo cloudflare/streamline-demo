@@ -1,0 +1,26 @@
+---
+import Layout from '../layouts/Layout.astro'
+import StreamingInterface from '../layouts/StreamingInterface.astro'
+import SubtitlePanel from '../layouts/SubtitlePanel.astro'
+
+const howItWorksSteps = [
+  'Enter a <strong>Stream Video ID</strong> (or use the one from Settings)',
+  'The browser starts an HLS session over HTTP with subtitle burn-in enabled',
+  'The container fetches the HLS manifest and subtitle track (WebVTT)',
+  'WebVTT is converted to SRT format for the media pipeline',
+  'The container reads the video and burns the subtitles into each frame',
+  'The start response reports subtitle language, cue count, and any warning',
+  'Processed preview media returns through Durable Relay, or the container sends it to your RTMP destination',
+]
+---
+
+<Layout title="Streamline Demo — Subtitle Burn-in">
+  <StreamingInterface
+    title="Subtitle Burn-in"
+    description="Process a Cloudflare Stream HLS input and burn its subtitles directly into the video frames. The container fetches the WebVTT subtitle track, converts it to SRT, and overlays the text during processing."
+    preset="passthrough"
+    howItWorksSteps={howItWorksSteps}
+  >
+    <SubtitlePanel />
+  </StreamingInterface>
+</Layout>
