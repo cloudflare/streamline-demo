@@ -102,13 +102,13 @@ test('playground routes per principal and fixes the allowed media contract', () 
   const logoPipeline = applyPlaygroundStartPolicy({
     input: { type: 'webcam' },
     pipeline: [
-      { op: 'overlay', params: { image: '/app/assets/cf-logo.png', position: 'top-right' } },
+      { op: 'overlay', params: { image: '/app/assets/streamline-logo.png', position: 'top-right' } },
       { op: 'encode', params: { codec: 'h264' } },
     ],
     output: { mode: 'websocket', format: 'fmp4' },
     session_id: 'session-id',
   }, profile).pipeline as unknown[]
-  assert.deepEqual(logoPipeline[0], { op: 'overlay', params: { image: '/app/assets/cf-logo.png', position: 'top-right' } })
+  assert.deepEqual(logoPipeline[0], { op: 'overlay', params: { image: '/app/assets/streamline-logo.png', position: 'top-right' } })
   const annotationPipeline = applyPlaygroundStartPolicy({
     input: { type: 'webcam' },
     pipeline: [

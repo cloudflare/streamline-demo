@@ -374,7 +374,7 @@ function validatePipeline(value: unknown, profile: DeploymentProfile): StreamOpe
 function validateOverlayOperation(value: unknown): Extract<StreamOperation, { op: 'overlay' }> {
   const params = asRecord(value, 'overlay params')
   requireExactKeys(params, ['image', 'position'], 'overlay params')
-  if (params.image === '/app/assets/cf-logo.png' && params.position === 'top-right') {
+  if (params.image === '/app/assets/streamline-logo.png' && params.position === 'top-right') {
     return { op: 'overlay', params: { image: params.image, position: params.position } }
   }
   if (params.image === 'annotation' && params.position === 'full') {

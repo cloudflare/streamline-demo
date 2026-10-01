@@ -243,7 +243,7 @@ test('preserves overlay ordering and the 1080p annotation MIME contract', () => 
   assert.deepEqual(plan.pipeline.map((operation) => operation.op), ['overlay', 'overlay', 'encode'])
   assert.deepEqual(plan.pipeline[0], {
     op: 'overlay',
-    params: { image: '/app/assets/cf-logo.png', position: 'top-right' },
+    params: { image: '/app/assets/streamline-logo.png', position: 'top-right' },
   })
   assert.deepEqual(plan.pipeline[1], {
     op: 'overlay',

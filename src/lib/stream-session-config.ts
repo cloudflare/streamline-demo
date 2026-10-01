@@ -180,7 +180,7 @@ export function buildCoreSessionPlan(
     pipeline.push({
       op: 'overlay',
       params: {
-        image: '/app/assets/cf-logo.png',
+        image: '/app/assets/streamline-logo.png',
         position: 'top-right',
       },
     })
@@ -250,7 +250,7 @@ export function buildProbeSessionPlan(
     pipeline.push({
       op: 'overlay',
       params: {
-        image: '/app/assets/cf-logo.png',
+        image: '/app/assets/streamline-logo.png',
         position: 'top-right',
       },
     })

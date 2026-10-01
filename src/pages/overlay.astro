@@ -6,7 +6,7 @@ const howItWorksSteps = [
   'Click <strong>Start Streaming</strong> to process the selected input source',
   'The browser posts a session plan containing the <code>overlay</code> operation',
   'Webcam chunks are uploaded over HTTP, while HLS and server-profile RTMPS inputs are pulled by the container',
-  'The container composites the Cloudflare logo (top-right) into the video stream',
+  'The container composites the Streamline logo (top-right) into the video stream',
   'Processed preview media returns through Durable Relay, or the container sends it to your RTMP destination',
 ]
 ---
@@ -14,7 +14,7 @@ const howItWorksSteps = [
 <Layout title="Streamline Demo — Overlay">
   <StreamingInterface
     title="Video Overlay"
-    description="Composite a Cloudflare logo overlay in the container before returning the processed output to Local Preview or sending it to your configured destination. Works with webcam, HLS, or RTMPS input."
+    description="Composite a Streamline logo overlay in the container before returning the processed output to Local Preview or sending it to your configured destination. Works with webcam, HLS, or RTMPS input."
     preset="overlay"
     showOverlayPreview={true}
     howItWorksSteps={howItWorksSteps}

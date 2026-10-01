@@ -152,7 +152,7 @@ test('accepts only canonical Cloudflare Stream HLS manifests', () => {
 
 test('reconstructs every supported pipeline operation from exact fields', () => {
   const requestPipeline = [
-    { op: 'overlay', params: { image: '/app/assets/cf-logo.png', position: 'top-right' } },
+    { op: 'overlay', params: { image: '/app/assets/streamline-logo.png', position: 'top-right' } },
     { op: 'overlay', params: { image: 'annotation', position: 'full' } },
     { op: 'filter', params: { preset: 'blur', amount: 2 } },
     { op: 'filter', params: { preset: 'brightness', amount: -0.5 } },
@@ -180,8 +180,8 @@ test('reconstructs every supported pipeline operation from exact fields', () => 
 
 test('rejects unknown and operation-specific pipeline fields', () => {
   const invalidOperations = [
-    { op: 'overlay', params: { image: '/app/assets/cf-logo.png', position: 'top-right' }, ignored: true },
-    { op: 'overlay', params: { image: '/app/assets/cf-logo.png', position: 'bottom-left' } },
+    { op: 'overlay', params: { image: '/app/assets/streamline-logo.png', position: 'top-right' }, ignored: true },
+    { op: 'overlay', params: { image: '/app/assets/streamline-logo.png', position: 'bottom-left' } },
     { op: 'overlay', params: { image: 'annotation', position: 'full', opacity: 0.5 } },
     { op: 'subtitle', params: { source: 'auto', language: 'en' } },
     { op: 'filter', params: { preset: 'blur' } },

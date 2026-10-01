@@ -33,6 +33,11 @@ const { title = 'Streamline Demo' } = Astro.props
       </div>
     </nav>
     <slot />
+    <footer class="playground-legal" data-playground-only hidden>
+      By using the Streamline Playground, you agree to our
+      <a href="https://www.cloudflare.com/website-terms/">Terms</a> and
+      <a href="https://www.cloudflare.com/privacypolicy/">Privacy Policy</a>.
+    </footer>
   </body>
 <script src="../lib/playground-navigation.ts"></script>
 
@@ -159,6 +164,19 @@ const { title = 'Streamline Demo' } = Astro.props
     background: var(--cf-orange-hover);
   }
 
+  .playground-legal {
+    margin-top: 2rem;
+    padding: 1rem 1.5rem;
+    color: var(--text-subtle);
+    border-top: 1px solid var(--border);
+    font-size: 0.8125rem;
+    text-align: center;
+  }
+
+  .playground-legal a {
+    color: var(--text-muted);
+  }
+
   @media (max-width: 600px) {
     .top-nav {
       flex-direction: column;
@@ -170,6 +188,10 @@ const { title = 'Streamline Demo' } = Astro.props
       gap: 1rem;
       flex-wrap: wrap;
       justify-content: center;
+    }
+
+    .playground-legal {
+      padding: 1rem 0.75rem;
     }
   }
 </style>
