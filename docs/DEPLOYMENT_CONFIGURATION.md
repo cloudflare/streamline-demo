@@ -30,11 +30,27 @@ account, Worker names, origins, Access policy inputs, container names, and
 Turnstile hostnames. The build derives the outbound publisher-host map from its
 configured origins and writes it to an ignored generated module.
 
-For a deployed application, set each Container `image` to a versioned image in
-the Cloudflare Registry, such as
-`registry.cloudflare.com/<ACCOUNT_ID>/streamline:0.1.0`. Build and push that
-image before deploying the Worker. Do not use the checked-in placeholder image
-or an adjacent source checkout in a deployment configuration.
+## Container Image
+
+Choose one Container image source for both the owner and Playground profiles.
+
+For development from adjacent Streamline and Demo checkouts, point the overlay
+at the local Dockerfile:
+
+```jsonc
+{
+  "image": "../../streamline/container/Dockerfile",
+  "image_build_context": "../../streamline/container"
+}
+```
+
+Wrangler builds this image and pushes it to the target Cloudflare account's
+managed registry during `wrangler deploy`; no separate registry setup is needed.
+
+For a released deployment with no local Container source, set each Container
+`image` to a versioned image already pushed to the Cloudflare Registry, such as
+`registry.cloudflare.com/<ACCOUNT_ID>/streamline:0.1.0`. Do not use the
+checked-in placeholder image as-is.
 
 Store secrets with Wrangler and provide operator API tokens only through the
 environment. Do not put secret values in the overlay, source repository, tests,
