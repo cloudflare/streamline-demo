@@ -13,6 +13,15 @@ Keep real Wrangler configuration in the ignored `.ops/` directory. Point build,
 typecheck, Access, and deployment commands at it with `STREAMLINE_OPS_DIR`:
 
 ```bash
+mkdir -p .ops
+cp wrangler.jsonc .ops/wrangler.jsonc
+```
+
+Replace every placeholder in the copied file with your account, Worker names,
+origins, Access policy inputs, Container image, and Turnstile hostnames. Then
+run commands against the overlay:
+
+```bash
 STREAMLINE_OPS_DIR=.ops npm run build:owner
 ```
 

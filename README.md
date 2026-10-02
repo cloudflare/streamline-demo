@@ -4,6 +4,9 @@ Streamline Demo is the reference Astro application for [Streamline](https://gith
 
 The demo consumes the released `@cloudflare/streamline` package and a versioned Streamline Container image. Streamline remains independent of this application.
 
+> [!IMPORTANT]
+> The checked-in `wrangler.jsonc` is a safe, non-deployable template. Keep account-specific settings in the ignored `.ops/wrangler.jsonc` overlay and run build, deployment, and Access commands with `STREAMLINE_OPS_DIR=.ops`. See [deployment configuration](docs/DEPLOYMENT_CONFIGURATION.md).
+
 ## Requirements
 
 - Node.js 22.12+
